@@ -133,9 +133,8 @@ class KernlServer:
             pyperclip.copy(self.password)
             print("[🔐] Password copied to clipboard.")
         except pyperclip.PyperclipException:
-            raise RuntimeError(
-                f"[❌] Cannot copy password to clipboard. Your password for this session is: {self.password}"
-            )
+            print(f"[❌] Cannot copy password to clipboard. Your password for this session is: {self.password}")
+
 
         return self.password
 
