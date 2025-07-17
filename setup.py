@@ -22,7 +22,7 @@ setup(
     install_requires=requirements,
     entry_points={
         "console_scripts": [
-            "kernl=server.kernl_server_cli:main",
+            "kernl=cli:main",
         ],
     },
     include_package_data=True,
