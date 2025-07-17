@@ -1,0 +1,59 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+.env
+.venv/
+
+# Editor/IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Python packaging and build artifacts
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+*.manifest
+*.spec
+
+# Wheels
+*.whl
+
+# Test, coverage, profiling
+.coverage
+htmlcov/
+.tox/
+.nox/
+.cache/
+.pytest_cache/
+.mypy_cache/
+coverage.xml
+
+# Ruff cache
+.ruff_cache/
+
+# Jupyter and notebook metadata
+.ipynb_checkpoints/
+*.ipynb
+# PyInstaller
+*.spec
+
+# Unit test result files
+test-results/
+
+# dotenv
+.env.*
