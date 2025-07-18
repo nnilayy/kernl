@@ -1,12 +1,14 @@
 import os
 import pyperclip
 import subprocess
-
+from kernl.utils.messages import success, fail, caution
 
 class SSHClient:
     def __init__(self, ssh_dir=None):
         self.ssh_dir = ssh_dir or os.path.expanduser("~/.ssh")
         os.makedirs(self.ssh_dir, exist_ok=True)
+
+
 
     def generate_ssh_key(
         self,
@@ -19,23 +21,19 @@ class SSHClient:
     ):
         supported_types = {"rsa", "ecdsa", "ed25519"}
         if key_type not in supported_types:
-            raise ValueError(
-                f"Unsupported key_type '{key_type}'. Supported types: {supported_types}"
-            )
+            raise ValueError(caution(f"Unsupported key_type '{key_type}'. Supported types: {supported_types}"))
 
         if key_type == "rsa":
             bits = bits or 4096
             if bits not in [2048, 3072, 4096]:
-                raise ValueError("RSA key must have bits = 2048, 3072, or 4096")
+                raise ValueError(caution("RSA key must have bits = 2048, 3072, or 4096"))
         elif key_type == "ecdsa":
             bits = bits or 256
             if bits not in [256, 384, 521]:
-                raise ValueError("ECDSA key must have bits = 256, 384, or 521")
+                raise ValueError(caution("ECDSA key must have bits = 256, 384, or 521"))
         elif key_type == "ed25519":
             if bits is not None:
-                print(
-                    "Note: ed25519 keys do not use the -b (bit length) parameter. Ignoring it."
-                )
+                print(caution("Note: ed25519 keys do not use the -b (bit length) parameter. Ignoring it."))
             bits = None
 
         key_name = key_name or f"id_{key_type}"
@@ -43,14 +41,10 @@ class SSHClient:
 
         if os.path.exists(key_path) or os.path.exists(key_path + ".pub"):
             if not overwrite_key:
-                raise FileExistsError(
-                    f"SSH key '{key_name}' already exists. Set overwrite_key=True to overwrite it or choose a different key_name."
-                )
+                raise FileExistsError(caution(f"SSH key '{key_name}' already exists. Set overwrite_key=True to overwrite it or choose a different key_name."))
             else:
                 os.remove(key_path) if os.path.exists(key_path) else None
-                os.remove(key_path + ".pub") if os.path.exists(
-                    key_path + ".pub"
-                ) else None
+                os.remove(key_path + ".pub") if os.path.exists(key_path + ".pub") else None
 
         cmd = ["ssh-keygen", "-t", key_type, "-f", key_path, "-N", passphrase]
         if email:
@@ -60,11 +54,13 @@ class SSHClient:
 
         try:
             subprocess.run(cmd, check=True)
-            print(f"SSH key generated at {key_path} and {key_path}.pub")
+            print(success(f"SSH key generated at {key_path} and {key_path}.pub"))
         except subprocess.CalledProcessError as e:
-            print("Failed to generate SSH key:", e)
+            print(fail(f"Failed to generate SSH key:", e))
 
         return key_path, key_path + ".pub"
+
+
 
     def list_ssh_keys_from_local_env(self):
         keys = []
@@ -74,11 +70,13 @@ class SSHClient:
                 keys.append(file)
         return keys
 
+
+
     def delete_ssh_key_from_local_env(self, key_name: str):
         if not isinstance(key_name, str):
-            raise TypeError("Key name must be a string.")
+            raise TypeError(caution("Key name must be a string."))
         if not key_name.strip():
-            raise ValueError("Key name cannot be an empty string.")
+            raise ValueError(caution("Key name cannot be an empty string."))
 
         if key_name.endswith(".pub"):
             key_name = key_name[:-4]
@@ -93,34 +91,36 @@ class SSHClient:
                 deleted.append(os.path.basename(path))
 
         if not deleted:
-            print(f"No key pair named '{key_name}' found.")
+            print(caution(f"No key pair named '{key_name}' found."))
         else:
-            print(f"Deleted: {', '.join(deleted)}")
+            print(success(f"Deleted: {', '.join(deleted)}"))
+
+
 
     def expose_public_key(self, key_name: str):
         if not isinstance(key_name, str):
-            raise TypeError("Key name must be a string.")
+            raise TypeError(caution("Key name must be a string."))
         if not key_name.strip():
-            raise ValueError("Key name cannot be an empty string.")
+            raise ValueError(caution("Key name cannot be an empty string."))
         if not key_name.endswith(".pub"):
-            raise ValueError("Only public keys ending with '.pub' can be exposed.")
+            raise ValueError(caution("Only public keys ending with '.pub' can be exposed."))
 
         pub_key_path = os.path.join(self.ssh_dir, key_name)
         if not os.path.isfile(pub_key_path):
-            raise FileNotFoundError(
-                f"Public key '{key_name}' not found in {self.ssh_dir}."
-            )
+            raise FileNotFoundError(fail(f"Public key '{key_name}' not found in {self.ssh_dir}."))
 
         with open(pub_key_path, "r") as f:
             public_key = f.read().strip()
 
         try:
             pyperclip.copy(public_key)
-            print(f"Public key '{key_name}' copied to clipboard successfully.")
+            print(success(f"Public key '{key_name}' copied to clipboard successfully."))
         except pyperclip.PyperclipException:
-            print("Copy-to-clipboard not available in this environment.")
-            print("Here is the public key:")
-            print(public_key)
+            print(caution("Copy-to-clipboard not available in this environment."))
+            print(caution("Here is the public key:"))
+            print(caution(public_key))
+
+
 
     def update_ssh_config(
         self,
@@ -200,6 +200,8 @@ class SSHClient:
         except subprocess.CalledProcessError:
             print(f"❌ Failed to scan and add {hostname} to known_hosts.")
 
+
+
     def reset_ssh_config(
         self, delete_config: bool = True, delete_known_hosts: bool = True
     ):
@@ -228,6 +230,8 @@ class SSHClient:
                 os.chmod(path, 0o644)
             print("✅ known_hosts files reset.")
 
+
+
     def verify_remote_ssh_connection(self, host: str):
         """
         Verifies SSH connection to a given host (e.g., github.com).
@@ -244,3 +248,40 @@ class SSHClient:
                 print("❌ SSH connection failed.")
         except subprocess.CalledProcessError as e:
             print("❌ SSH verification command failed:", e)
+
+
+
+    @staticmethod
+    def set_git_credentials(user_name: str, user_email: str, global_scope: bool = True):
+        print("Setting up Git credentials...")
+
+        if not isinstance(user_name, str) or not user_name.strip():
+            raise ValueError("The 'user_name' must be a non-empty string.")
+        if not isinstance(user_email, str) or not user_email.strip():
+            raise ValueError("The 'user_email' must be a non-empty string.")
+
+        scope = "--global" if global_scope else "--local"
+
+        try:
+            subprocess.run(
+                ["git", "config", scope, "user.name", user_name],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            subprocess.run(
+                ["git", "config", scope, "user.email", user_email],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+
+            print(
+                f"✅ Git credentials set {'globally' if global_scope else 'locally'}:"
+            )
+            print(f"  Name : {user_name}")
+            print(f"  Email: {user_email}")
+
+        except subprocess.CalledProcessError as e:
+            print(f"❌ Failed to set Git credentials: {e.stderr or str(e)}")
+            raise
