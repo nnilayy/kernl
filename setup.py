@@ -9,7 +9,7 @@ long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="kernl",
-    version="0.3.4",
+    version="0.3.5",
     author="Nilay Kumar Bhatnagar",
     author_email="nnilayy.work@email.com",
     description="To be Updated",
@@ -22,7 +22,7 @@ setup(
     install_requires=requirements,
     entry_points={
         "console_scripts": [
-            "kernl=cli:main",
+            "kernl=cli.cli:main",
         ],
     },
     include_package_data=True,
