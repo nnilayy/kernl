@@ -9,7 +9,7 @@ long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="kernl",
-    version="0.2.0",
+    version="0.3.0",
     author="Nilay Kumar Bhatnagar",
     author_email="nnilayy.work@email.com",
     description="To be Updated",
