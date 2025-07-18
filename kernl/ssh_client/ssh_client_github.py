@@ -1,6 +1,5 @@
 import os
 import requests
-import subprocess
 from .ssh_client_base import SSHClient
 
 
@@ -98,37 +97,3 @@ class GitHubSSHClient(SSHClient):
             print(f"❌ Failed to delete SSH key (status code {response.status_code}):")
             print(response.json())
 
-    @staticmethod
-    def set_git_credentials(user_name: str, user_email: str, global_scope: bool = True):
-        print("Setting up Git credentials...")
-
-        if not isinstance(user_name, str) or not user_name.strip():
-            raise ValueError("The 'user_name' must be a non-empty string.")
-        if not isinstance(user_email, str) or not user_email.strip():
-            raise ValueError("The 'user_email' must be a non-empty string.")
-
-        scope = "--global" if global_scope else "--local"
-
-        try:
-            subprocess.run(
-                ["git", "config", scope, "user.name", user_name],
-                check=True,
-                capture_output=True,
-                text=True,
-            )
-            subprocess.run(
-                ["git", "config", scope, "user.email", user_email],
-                check=True,
-                capture_output=True,
-                text=True,
-            )
-
-            print(
-                f"✅ Git credentials set {'globally' if global_scope else 'locally'}:"
-            )
-            print(f"  Name : {user_name}")
-            print(f"  Email: {user_email}")
-
-        except subprocess.CalledProcessError as e:
-            print(f"❌ Failed to set Git credentials: {e.stderr or str(e)}")
-            raise
