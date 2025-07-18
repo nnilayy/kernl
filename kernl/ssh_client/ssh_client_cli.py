@@ -1,7 +1,4 @@
 from ssh_client import SSHClient
-from ssh_client_github import SSHClientGitHub
-from ssh_client_gitlab import SSHClientGitLab
-
 
 def generate_key_cmd(args):
     client = SSHClient()
