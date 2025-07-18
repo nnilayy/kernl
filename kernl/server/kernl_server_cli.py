@@ -70,14 +70,11 @@ def start_server(args):
         traceback.print_exc()
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        prog="kernl",
-        description="Launch a public VSCode Kernl Server with optional dataset and extension support.",
-    )
-    subparsers = parser.add_subparsers(dest="command")
+def add_server_subcommands(subparsers):
+    server_parser = subparsers.add_parser("server", help="Manage the Kernl VSCode Server")
+    server_subparsers = server_parser.add_subparsers(dest="server_cmd", required=True)
 
-    start_parser = subparsers.add_parser("start", help="Start the VSCode server")
+    start_parser = server_subparsers.add_parser("start", help="Start the VSCode server")
 
     start_parser.add_argument(
         "--dataset_manager",
@@ -123,13 +120,3 @@ def main():
     )
 
     start_parser.set_defaults(func=start_server)
-
-    args = parser.parse_args()
-    if hasattr(args, "func"):
-        args.func(args)
-    else:
-        parser.print_help()
-
-
-if __name__ == "__main__":
-    main()
