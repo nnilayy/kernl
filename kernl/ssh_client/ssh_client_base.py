@@ -1,7 +1,7 @@
 import os
 import pyperclip
 import subprocess
-from kernl.utils.messages import success, fail, caution
+from kernl.utils.messages import caution, success, fail
 
 class SSHClient:
     def __init__(self, ssh_dir=None):
