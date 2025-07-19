@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/kernl-banner.png" alt="Kernl Banner" width="75%"/>
+  <img src="https://raw.githubusercontent.com/nnilayy/kernl/main/assets/kernl-banner.png" alt="Kernl Banner" width="80%">
 </p>
 
 <p align="center">
@@ -14,6 +14,6 @@
     <img src="https://img.shields.io/github/license/nnilayy/kernl.svg" alt="License">
   </a>
   <a href="https://github.com/nnilayy/kernl/actions/workflows/pypi.yml">
-    <img src="https://github.com/nnilayy/kernl/actions/workflows/pypi.yml/badge.svg" alt="Build & Publish">
+    <img src="https://github.com/nnilayy/kernl/actions/workflows/pypi.yml/badge.svg?event=push" alt="Build & Publish">
   </a>
 </p>
