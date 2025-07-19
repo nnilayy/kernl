@@ -1,5 +1,10 @@
 from ssh_client import SSHClient
+from ssh_client_github import GitHubSSHClient
+from ssh_client_gitlab import GitLabSSHClient
+from ssh_client_bitbucket import BitbucketSSHClient
 
+# ------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------
 def generate_key_cmd(args):
     client = SSHClient()
     client.generate_ssh_key(
