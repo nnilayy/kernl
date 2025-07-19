@@ -13,7 +13,3 @@
   <a href="https://github.com/nnilayy/kernl/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/nnilayy/kernl.svg" alt="License">
   </a>
-  <a href="https://github.com/nnilayy/kernl/actions/workflows/pypi.yml">
-    <img src="https://github.com/nnilayy/kernl/actions/workflows/pypi.yml/badge.svg?event=push" alt="Build & Publish">
-  </a>
-</p>
