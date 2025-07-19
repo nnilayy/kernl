@@ -1,7 +1,4 @@
 from ssh_client import SSHClient
-from ssh_client_github import GitHubSSHClient
-from ssh_client_gitlab import GitLabSSHClient
-from ssh_client_bitbucket import BitbucketSSHClient
 
 # ------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------------
