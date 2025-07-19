@@ -13,3 +13,4 @@
   <a href="https://github.com/nnilayy/kernl/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/nnilayy/kernl.svg" alt="License">
   </a>
+</p>
