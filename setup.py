@@ -4,9 +4,8 @@ import re
 import os
 
 def get_version():
-    here = os.path.abspath(os.path.dirname(__file__))
-    version_path = os.path.join(here, "kernl", "version.py")
-    with open(version_path, encoding="utf-8") as f:
+    version_file = os.path.join("kernl/", "version.py")
+    with open(version_file, encoding="utf-8") as f:
         match = re.search(r"__version__\s*=\s*['\"]([^'\"]+)['\"]", f.read())
         if match:
             return match.group(1)
