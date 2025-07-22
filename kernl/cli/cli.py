@@ -1,14 +1,21 @@
 import argparse
+import sys
+from version import __version__
+from banner import display_banner
 from ssh_client.ssh_client_cli import add_git_ssh_subcommands
 from server.kernl_server_cli import add_server_subcommands
 
 def main():
-    parser = argparse.ArgumentParser(prog="kernl", description="Kernl CLI")
-    subparsers = parser.add_subparsers(dest="subcommand", required=True)
+    if len(sys.argv) == 1 or "-h" in sys.argv or "--help" in sys.argv:
+        display_banner()
 
+    parser = argparse.ArgumentParser(prog="kernl", description="Kernl CLI")
+    parser.add_argument("--version", "-V", action="version", version=f"Kernl {__version__}")
+    
+    subparsers = parser.add_subparsers(dest="subcommand", required=True)
     add_git_ssh_subcommands(subparsers)
     add_server_subcommands(subparsers)
-
+    
     args = parser.parse_args()
     if hasattr(args, "func"):
         args.func(args)
