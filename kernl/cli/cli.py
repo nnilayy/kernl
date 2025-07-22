@@ -1,7 +1,7 @@
 import argparse
 import sys
 from version import __version__
-from banner import display_banner
+from .banner import display_banner
 from ssh_client.ssh_client_cli import add_git_ssh_subcommands
 from server.kernl_server_cli import add_server_subcommands
 
