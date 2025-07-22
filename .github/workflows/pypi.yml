@@ -19,29 +19,13 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Ensure correct working directory and export PYTHONPATH
-        run: |
-          cd $GITHUB_WORKSPACE
-          echo "Current working directory:"
-          pwd
-          echo "Files:"
-          ls -al
-          export PYTHONPATH=$GITHUB_WORKSPACE
-          echo "PYTHONPATH=$PYTHONPATH"
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install build wheel
 
-      - name: Debug - Print Python sys.path
-        run: |
-          python -c "import sys; print('sys.path:', sys.path)"
-
       - name: Build package
-        run: |
-          export PYTHONPATH=$GITHUB_WORKSPACE
-          python -m build --no-isolation
+        run: python -m build --no-isolation
 
       - name: Upload dist files as artifact
         uses: actions/upload-artifact@v4

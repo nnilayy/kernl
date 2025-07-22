@@ -27,12 +27,12 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/nnilayy/kernl",
     license="MIT",
-    packages=find_packages(where="kernl"),
-    package_dir={"": "kernl"},
+    packages=find_packages(),
+    # package_dir={"": "kernl"},
     install_requires=requirements,
     entry_points={
         "console_scripts": [
-            "kernl=cli.cli:main",
+            "kernl=kernl.cli.cli:main",
         ],
     },
     include_package_data=True,

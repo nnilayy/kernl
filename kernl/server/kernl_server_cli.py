@@ -2,9 +2,9 @@ import time
 import getpass
 import argparse
 import traceback
-from server.kernl_server import KernlServer
-from dataset_managers.dataset_manager_kaggle import KaggleManager
-from dataset_managers.dataset_manager_huggingface import HuggingFaceManager
+from .kernl_server import KernlServer
+from kernl.dataset_managers.dataset_manager_kaggle import KaggleManager
+from kernl.dataset_managers.dataset_manager_huggingface import HuggingFaceManager
 
 
 def prompt_secure_input(prompt_text: str) -> str:
