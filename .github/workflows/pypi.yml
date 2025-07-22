@@ -19,13 +19,24 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Debug - Show current directory and files
         run: |
-          python -m pip install --upgrade pip
-          pip install build wheel
+          echo "Current working directory:"
+          pwd
+          echo "Files:"
+          ls -al
+          echo "Exporting PYTHONPATH..."
+          export PYTHONPATH=$(pwd)
+          echo "PYTHONPATH=$PYTHONPATH"
+
+      - name: Debug - Print Python sys.path
+        run: |
+          python -c "import sys; print('sys.path:', sys.path)"
 
       - name: Build package
-        run: python -m build --no-isolation
+        run: |
+          export PYTHONPATH=$(pwd)
+          python -m build --no-isolation
 
       - name: Upload dist files as artifact
         uses: actions/upload-artifact@v4
