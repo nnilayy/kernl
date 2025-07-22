@@ -1,5 +1,15 @@
 from setuptools import setup, find_packages
 import pathlib
+import re
+import os
+
+def get_version():
+    version_file = os.path.join("kernl", "version.py")
+    with open(version_file, encoding="utf-8") as f:
+        match = re.search(r"__version__\s*=\s*['\"]([^'\"]+)['\"]", f.read())
+        if match:
+            return match.group(1)
+        raise RuntimeError("Version not found.")
 
 with open("requirements.txt", encoding="utf-8") as f:
     requirements = f.read().splitlines()
@@ -9,7 +19,7 @@ long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="kernl",
-    version="0.4.1",
+    version=get_version(),
     author="Nilay Kumar Bhatnagar",
     author_email="nnilayy.work@email.com",
     description="To be Updated",
