@@ -1,4 +1,5 @@
 import os
+import json
 import requests
 from base64 import b64encode
 from .ssh_client_base import SSHClient
@@ -12,22 +13,77 @@ class BitbucketSSHClient(SSHClient):
         self.username = None
         self.api_base_url = "https://api.bitbucket.org/2.0/users"
 
+        self.config_dir = os.path.expanduser("~/.kernl/ssh")
+        self.config_file = os.path.join(self.config_dir, "bitbucket.json")
+        self._load_credentials()
+
+    def _load_credentials(self):
+        """Load email, token, and username if previously saved."""
+        if os.path.exists(self.config_file):
+            try:
+                with open(self.config_file, "r") as f:
+                    data = json.load(f)
+
+                self.email = data.get("email")
+                self.token = data.get("token")
+                self.username = data.get("username")
+            except Exception:
+                pass
+
     def set_bitbucket_api_token(self, email: str, token: str):
         if not isinstance(email, str) or not email.strip():
             raise ValueError("Bitbucket email must be a non-empty string.")
         if not isinstance(token, str) or not token.strip():
             raise ValueError("API token must be a non-empty string.")
+
+        # Assign temporarily (not persisted yet)
         self.email = email.strip()
         self.token = token.strip()
 
-        # Get username from token
+        # Validate and fetch username
         headers = self._build_auth_headers()
         response = requests.get("https://api.bitbucket.org/2.0/user", headers=headers)
+
         if response.status_code == 200:
             self.username = response.json().get("username")
-            print(f"✅ Bitbucket API token set successfully for user: {self.username}")
+
+            # Ensure folder exists
+            os.makedirs(self.config_dir, exist_ok=True)
+
+            # Save to disk
+            with open(self.config_file, "w") as f:
+                json.dump(
+                    {
+                        "email": self.email,
+                        "token": self.token,
+                        "username": self.username,
+                    },
+                    f,
+                )
+
+            print(f"✅ Bitbucket API token set and persisted successfully for user: {self.username}")
+
         else:
-            raise RuntimeError(f"❌ Failed to verify token: {response.status_code} - {response.text}")
+            raise RuntimeError(
+                f"❌ Failed to verify token: {response.status_code} - {response.text}"
+            )
+
+    def remove_bitbucket_api_token(self):
+        """Remove stored Bitbucket credentials from memory and disk."""
+        self.email = None
+        self.token = None
+        self.username = None
+
+        if os.path.exists(self.config_file):
+            try:
+                os.remove(self.config_file)
+                print("🗑️ Removed stored Bitbucket credentials.")
+            except Exception as e:
+                print(f"⚠️ Failed to remove Bitbucket credentials file: {e}")
+        else:
+            print("ℹ️ No Bitbucket credentials file found.")
+
+        print("✅ Bitbucket credentials cleared from memory.")
 
     def _require_token(self):
         if not self.email or not self.token or not self.username:
