@@ -19,6 +19,24 @@
 
 Kernl is a secure persistent development environment system for cloud based Linux/Unix instances, providing a VSCode Web workspace backed by cloud based dataset managers such as HuggingFace 🤗 and Kaggle to keep full codebases, configurations, virtual environments, and dependencies persistent in the cloud, while supporting connections to distributed version-control platforms including GitHub, GitLab, and Bitbucket for SSH access and seamless continuation of development work from the start.
 
+## Features
+
+**• 🔐 Secure VSCode Web Workspace**
+Kernl provides a secure, password-protected VSCode Web workspace that offers a full development environment for cloud-based Linux/Unix instances. The workspace is exposed through ngrok tunneling and provides complete access to the VSCode interface.
+
+**• ☁️ Cloud-backed Persistent Environment**
+Workspaces are managed by cloud dataset managers such as HuggingFace 🤗 and Kaggle, keeping full codebases, VSCode configurations, virtual environments, and dependencies consistently preserved and restorable across sessions. Environment storage uses fast tar-lz4 compression and decompression for quick upload and retrieval of workspace components.
+
+**• 🔗 Integrated Version-Control Connectivity**
+Kernl supports connections to all major distributed version-control platforms including GitHub, GitLab, and Bitbucket. It enables authentication through platform tokens, allows adding and deleting SSH keys directly from Kernl, and provides seamless access to repositories for immediate development.
+
+**• 🌐 Unified Remote Development Interface**
+Kernl allows you to push full environments to the cloud and pull them back whenever needed, enabling seamless continuation of work without occupying storage on the host machine, and allowing development to resume on any compatible cloud instance using the stored environments and connected distributed version-control platforms.
+
+**• 🧩 Both API and CLI Availability**
+Kernl is accessible as both a Python API and a terminal-based CLI tool, allowing you to automate tasks programmatically or interact directly from the command line depending on your workflow.
+
+
 ## Installation
 
 `kernl` can be installed in two ways, one is directly from PyPI for regular use, and the other is by cloning the repository if you want to modify the project or contribute. Before installing `kernl`, it is recommended to create a new virtual environment.
