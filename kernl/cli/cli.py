@@ -2,7 +2,7 @@ import argparse
 import sys
 from kernl.version import __version__
 from kernl.banner import display_banner
-from kernl.ssh_client.ssh_client_cli import add_git_ssh_subcommands
+from kernl.ssh_client.ssh_client_cli import add_ssh_subcommands
 from kernl.server.kernl_server_cli import add_server_subcommands
 
 def main():
@@ -13,7 +13,7 @@ def main():
     parser.add_argument("--version", "-V", action="version", version=f"Kernl {__version__}")
     
     subparsers = parser.add_subparsers(dest="subcommand", required=True)
-    add_git_ssh_subcommands(subparsers)
+    add_ssh_subcommands(subparsers)
     add_server_subcommands(subparsers)
     
     args = parser.parse_args()
