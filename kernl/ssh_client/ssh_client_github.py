@@ -1,4 +1,5 @@
 import os
+import json
 import requests
 from .ssh_client_base import SSHClient
 
@@ -6,14 +7,55 @@ from .ssh_client_base import SSHClient
 class GitHubSSHClient(SSHClient):
     def __init__(self):
         super().__init__()
+
         self.github_token = None
         self.api_url = "https://api.github.com/user/keys"
+
+        self.config_dir = os.path.expanduser("~/.kernl/ssh")
+        self.config_file = os.path.join(self.config_dir, "github.json")
+        self._load_token()
+
+    def _load_token(self):
+        if os.path.exists(self.config_file):
+            try:
+                with open(self.config_file, "r") as f:
+                    data = json.load(f)
+                token = data.get("token")
+                if token:
+                    self.github_token = token
+            except Exception:
+                pass
 
     def set_github_personal_access_token(self, token: str):
         if not isinstance(token, str) or not token.strip():
             raise ValueError("Token must be a non-empty string.")
+
+        # Ensure folder exists
+        os.makedirs(self.config_dir, exist_ok=True)
+
+        # Save to file
+        with open(self.config_file, "w") as f:
+            json.dump({"token": token.strip()}, f)
+
+        # Store in memory
         self.github_token = token.strip()
-        print("✅ GitHub token set successfully.")
+
+        print("✅ GitHub token set and persisted successfully.")
+
+    def remove_github_personal_access_token(self):
+        """Remove stored GitHub token from memory and disk."""
+        self.github_token = None
+
+        if os.path.exists(self.config_file):
+            try:
+                os.remove(self.config_file)
+                print("🗑️ Removed stored GitHub token.")
+            except Exception as e:
+                print(f"⚠️ Failed to remove GitHub token file: {e}")
+        else:
+            print("ℹ️ No GitHub token file found.")
+
+        print("✅ GitHub token cleared from memory.")
 
     def _require_token(self):
         if not self.github_token:
