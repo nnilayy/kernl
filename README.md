@@ -17,7 +17,7 @@
 
 ## Overview
 
-Kernl is a secure persistent development environment system for cloud based Linux/Unix instances, providing a VSCode Web workspace backed by cloud based dataset managers such as HuggingFace 🤗 and Kaggle to keep full codebases, configurations, virtual environments, and dependencies consistently preserved. It also supports connections to distributed version-control platforms including GitHub, GitLab, and Bitbucket, enabling SSH access to these platforms and seamless continuation of development work from the start.
+Kernl is a secure persistent development environment system for cloud based Linux/Unix instances, providing a VSCode Web workspace backed by cloud based dataset managers such as HuggingFace 🤗 and Kaggle to keep full codebases, configurations, virtual environments, and dependencies persistent in the cloud, while supporting connections to distributed version-control platforms including GitHub, GitLab, and Bitbucket for SSH access and seamless continuation of development work from the start.
 
 ## Installation
 
